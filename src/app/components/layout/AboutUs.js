@@ -9,7 +9,7 @@ const AboutUs = () => {
           Welcome to Mealtime! At Mealtime, we’re passionate about making your
           dining experience as effortless and enjoyable as possible. Our mission
           is to connect you with a wide variety of delicious meals from your
-          favorite local restaurants, right at your fingertips. Whether you're
+          favorite local restaurants, right at your fingertips. Whether you&rsquo;re
           craving a quick lunch, a hearty dinner, or a special treat, Mealtime
           is here to deliver your food cravings directly to your door. culpa qui
           officia deserunt mollit anim id est laborum
