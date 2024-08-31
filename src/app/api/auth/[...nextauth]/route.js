@@ -1,13 +1,12 @@
-import clientPromise from "@/libs/mongoConnect";
+// import clientPromise from "@/libs/mongoConnect"; 
 import { UserInfo } from "@/models/UserInfo";
 import bcrypt from "bcrypt";
 import * as mongoose from "mongoose";
 import { User } from "@/models/User";
-import NextAuth, {getServerSession} from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-
+// import { MongoDBAdapter } from "@auth/mongodb-adapter"
 
 export const authOptions = {
   secret: process.env.SECRET,
@@ -21,7 +20,7 @@ export const authOptions = {
       name: "Credentials",
       id: "credentials",
       credentials: {
-        username: {
+        email: {
           label: "Email",
           type: "email",
           placeholder: "test@example.com",
@@ -32,7 +31,10 @@ export const authOptions = {
         const email = credentials?.email;
         const password = credentials?.password;
 
-        mongoose.connect(process.env.MONGO_URL);
+        if (!mongoose.connection.readyState) {
+          await mongoose.connect(process.env.MONGO_URL);
+        }
+
         const user = await User.findOne({ email });
         const passwordOk = user && bcrypt.compareSync(password, user.password);
         if (passwordOk) {
@@ -44,7 +46,8 @@ export const authOptions = {
   ],
 };
 
-export const isAdmin = async () => {
+
+export const isAdmin = async() => {
   const session = await getServerSession(authOptions);
   const userEmail = session?.user?.email;
   if (!userEmail) {
@@ -57,6 +60,7 @@ export const isAdmin = async () => {
   return userInfo.admin;
 };
 
+
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }
